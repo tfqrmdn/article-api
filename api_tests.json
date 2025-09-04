@@ -1,0 +1,288 @@
+{
+  "api_tests": {
+    "description": "Comprehensive API test cases for Article API",
+    "base_url": "http://localhost:8080",
+    "endpoints": {
+      "list_articles": {
+        "description": "GET /articles - List articles with various filters and pagination",
+        "tests": [
+          {
+            "name": "Basic list articles",
+            "description": "Get all articles with default pagination",
+            "curl": "curl -X GET 'http://localhost:8080/articles'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with pagination",
+            "description": "Get articles with custom page and limit",
+            "curl": "curl -X GET 'http://localhost:8080/articles?page=1&limit=5'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with search filter",
+            "description": "Search articles by title and body content",
+            "curl": "curl -X GET 'http://localhost:8080/articles?search=Go'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with author filter",
+            "description": "Filter articles by author name",
+            "curl": "curl -X GET 'http://localhost:8080/articles?author=John'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with combined filters",
+            "description": "Search and filter by author with pagination",
+            "curl": "curl -X GET 'http://localhost:8080/articles?search=database&author=Jane&page=1&limit=3'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with empty search",
+            "description": "Test with empty search parameter",
+            "curl": "curl -X GET 'http://localhost:8080/articles?search='",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with empty author filter",
+            "description": "Test with empty author parameter",
+            "curl": "curl -X GET 'http://localhost:8080/articles?author='",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with large page number",
+            "description": "Test pagination with page number beyond available data",
+            "curl": "curl -X GET 'http://localhost:8080/articles?page=999&limit=10'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with large limit",
+            "description": "Test with large limit value",
+            "curl": "curl -X GET 'http://localhost:8080/articles?limit=100'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with zero limit",
+            "description": "Test with limit=0",
+            "curl": "curl -X GET 'http://localhost:8080/articles?limit=0'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with negative page",
+            "description": "Test with negative page number",
+            "curl": "curl -X GET 'http://localhost:8080/articles?page=-1'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with special characters in search",
+            "description": "Test search with special characters",
+            "curl": "curl -X GET 'http://localhost:8080/articles?search=@#$%'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with URL encoded search",
+            "description": "Test search with URL encoded characters",
+            "curl": "curl -X GET 'http://localhost:8080/articles?search=hello%20world'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with case insensitive search",
+            "description": "Test case insensitive search",
+            "curl": "curl -X GET 'http://localhost:8080/articles?search=GOLANG'",
+            "expected_status": 200
+          },
+          {
+            "name": "List articles with partial author name",
+            "description": "Test partial author name matching",
+            "curl": "curl -X GET 'http://localhost:8080/articles?author=Jo'",
+            "expected_status": 200
+          }
+        ]
+      },
+      "create_article": {
+        "description": "POST /articles - Create new articles with various scenarios",
+        "tests": [
+          {
+            "name": "Create article with valid data",
+            "description": "Create article with all required fields",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Test Article\",\"body\":\"This is a test article body with some content.\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with long title",
+            "description": "Create article with very long title",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"This is a very long article title that contains many words and should test the database field length limits and application handling of long titles\",\"body\":\"Article body content.\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with long body",
+            "description": "Create article with very long body content",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article with Long Body\",\"body\":\"This is a very long article body that contains a lot of content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with special characters",
+            "description": "Create article with special characters in title and body",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article with Special Chars: @#$%^&*()\",\"body\":\"Body with special chars: !@#$%^&*()_+-=[]{}|;:,.<>?\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with unicode characters",
+            "description": "Create article with unicode characters",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article with Unicode: 你好世界 🌍\",\"body\":\"Body with unicode: 测试内容 and emojis 🚀\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with HTML content",
+            "description": "Create article with HTML tags in body",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article with HTML\",\"body\":\"<h1>Title</h1><p>This is a <strong>bold</strong> paragraph with <em>italic</em> text.</p><ul><li>Item 1</li><li>Item 2</li></ul>\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with JSON content",
+            "description": "Create article with JSON in body",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article with JSON\",\"body\":\"{\\\"key1\\\": \\\"value1\\\", \\\"key2\\\": [1, 2, 3], \\\"key3\\\": {\\\"nested\\\": \\\"object\\\"}}\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with different author",
+            "description": "Create article with author-2",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-2\",\"title\":\"Article by Jane Smith\",\"body\":\"This article is written by Jane Smith.\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with minimal title",
+            "description": "Create article with single character title",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"A\",\"body\":\"Minimal title test.\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with minimal body",
+            "description": "Create article with single character body",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Minimal Body Test\",\"body\":\"X\"}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with empty title",
+            "description": "Test validation with empty title",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"\",\"body\":\"Article with empty title.\"}'",
+            "expected_status": 400
+          },
+          {
+            "name": "Create article with empty body",
+            "description": "Test validation with empty body",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article with Empty Body\",\"body\":\"\"}'",
+            "expected_status": 400
+          },
+          {
+            "name": "Create article without author_id",
+            "description": "Test validation without author_id",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"title\":\"Article without Author\",\"body\":\"This article has no author_id.\"}'",
+            "expected_status": 400
+          },
+          {
+            "name": "Create article without title",
+            "description": "Test validation without title",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"body\":\"This article has no title.\"}'",
+            "expected_status": 400
+          },
+          {
+            "name": "Create article without body",
+            "description": "Test validation without body",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article without Body\"}'",
+            "expected_status": 400
+          },
+          {
+            "name": "Create article with invalid author_id",
+            "description": "Test with non-existent author_id",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"non-existent-author\",\"title\":\"Article with Invalid Author\",\"body\":\"This article has an invalid author_id.\"}'",
+            "expected_status": 400
+          },
+          {
+            "name": "Create article with invalid JSON",
+            "description": "Test with malformed JSON",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Invalid JSON\",\"body\":\"Test\"'",
+            "expected_status": 400
+          },
+          {
+            "name": "Create article with extra fields",
+            "description": "Test with additional fields in JSON",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article with Extra Fields\",\"body\":\"Test body\",\"extra_field\":\"should be ignored\",\"another_field\":123}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with null values",
+            "description": "Test with null values",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Article with Nulls\",\"body\":\"Test body\",\"null_field\":null}'",
+            "expected_status": 201
+          },
+          {
+            "name": "Create article with numeric author_id",
+            "description": "Test with numeric author_id (should fail)",
+            "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":123,\"title\":\"Article with Numeric Author ID\",\"body\":\"Test body\"}'",
+            "expected_status": 400
+          }
+        ]
+      }
+    },
+    "error_scenarios": {
+      "description": "Test error handling and edge cases",
+      "tests": [
+        {
+          "name": "Invalid HTTP method",
+          "description": "Test with unsupported HTTP method",
+          "curl": "curl -X PUT 'http://localhost:8080/articles'",
+          "expected_status": 405
+        },
+        {
+          "name": "Invalid endpoint",
+          "description": "Test with non-existent endpoint",
+          "curl": "curl -X GET 'http://localhost:8080/invalid-endpoint'",
+          "expected_status": 404
+        },
+        {
+          "name": "Missing Content-Type header",
+          "description": "Test POST without Content-Type header",
+          "curl": "curl -X POST 'http://localhost:8080/articles' -d '{\"author_id\":\"author-1\",\"title\":\"Test\",\"body\":\"Test\"}'",
+          "expected_status": 400
+        },
+        {
+          "name": "Wrong Content-Type header",
+          "description": "Test POST with wrong Content-Type",
+          "curl": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: text/plain' -d '{\"author_id\":\"author-1\",\"title\":\"Test\",\"body\":\"Test\"}'",
+          "expected_status": 400
+        }
+      ]
+    },
+    "performance_tests": {
+      "description": "Test performance and caching",
+      "tests": [
+        {
+          "name": "Multiple rapid requests",
+          "description": "Test multiple rapid requests to check caching",
+          "curl": "for i in {1..5}; do curl -X GET 'http://localhost:8080/articles' & done; wait",
+          "expected_status": 200
+        },
+        {
+          "name": "Large limit request",
+          "description": "Test with very large limit",
+          "curl": "curl -X GET 'http://localhost:8080/articles?limit=1000'",
+          "expected_status": 200
+        }
+      ]
+    }
+  },
+  "usage_instructions": {
+    "description": "How to use these test cases",
+    "steps": [
+      "1. Start the application: make run-local-no-redis",
+      "2. Run individual curl commands from the tests above",
+      "3. Check the response status codes match expected_status",
+      "4. Verify response content matches expected format",
+      "5. Test caching by running the same request multiple times"
+    ],
+    "example_usage": {
+      "basic_test": "curl -X GET 'http://localhost:8080/articles'",
+      "create_test": "curl -X POST 'http://localhost:8080/articles' -H 'Content-Type: application/json' -d '{\"author_id\":\"author-1\",\"title\":\"Test Article\",\"body\":\"Test body\"}'"
+    }
+  }
+}

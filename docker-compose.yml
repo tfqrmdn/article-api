@@ -1,0 +1,75 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-article_db}
+      POSTGRES_USER: ${DB_USERNAME:-default}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-default} -d ${DB_DATABASE:-article_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "${HTTP_SERVER_PORT:-8080}:${HTTP_SERVER_PORT:-8080}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      # Application Configuration
+      APP_NAME: ${APP_NAME:-article_api}
+      APP_ENV: ${APP_ENV:-dev}
+      SERVER_LOCATION: ${SERVER_LOCATION:-Asia/Jakarta}
+      
+      # Server Configuration
+      SERVER_HOST: ${SERVER_HOST:-0.0.0.0}
+      HTTP_SERVER_PORT: ${HTTP_SERVER_PORT:-8080}
+      SERVER_READ_TIMEOUT: ${SERVER_READ_TIMEOUT:-30s}
+      SERVER_WRITE_TIMEOUT: ${SERVER_WRITE_TIMEOUT:-30s}
+      SERVER_IDLE_TIMEOUT: ${SERVER_IDLE_TIMEOUT:-120s}
+      
+      # Database Configuration
+      DB_CONNECTION: ${DB_CONNECTION:-postgres}
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_DATABASE: ${DB_DATABASE:-article_db}
+      DB_USERNAME: ${DB_USERNAME:-article_user}
+      DB_PASSWORD: ${DB_PASSWORD:-article_password}
+      DB_MIGRATION_PATH: ${DB_MIGRATION_PATH:-files/db}
+      
+      # Redis Configuration
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      REDIS_DB: ${REDIS_DB:-3}
+      REDIS_INIT_TIMEOUT: ${REDIS_INIT_TIMEOUT:-5}
+      REDIS_ARTICLE_TTL: ${REDIS_ARTICLE_TTL:-86400}
+      REDIS_ARTICLE_PREFIX: ${REDIS_ARTICLE_PREFIX:-article-}
+      REDIS_USERNAME: ${REDIS_USERNAME:-}
+      
+
+volumes:
+  postgres_data:
+  redis_data:
