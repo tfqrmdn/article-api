@@ -1,0 +1,1022 @@
+{
+  "info": {
+    "_postman_id": "article-api-collection-2024",
+    "name": "Article API - Complete Collection",
+    "description": "Comprehensive Postman collection for Article API with all query parameters, filters, pagination, and test scenarios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "article-api"
+  },
+  "item": [
+    {
+      "name": "List Articles",
+      "item": [
+        {
+          "name": "Basic List - All Articles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Get all articles with default pagination (page=1, limit=10)"
+          },
+          "response": []
+        },
+        {
+          "name": "List with Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?page=1&limit=5",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "description": "Items per page"
+                }
+              ]
+            },
+            "description": "Get articles with custom pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "Search by Title/Body",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?search=Go",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Go",
+                  "description": "Search term for title and body"
+                }
+              ]
+            },
+            "description": "Search articles by title and body content"
+          },
+          "response": []
+        },
+        {
+          "name": "Filter by Author",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?author=John",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "author",
+                  "value": "John",
+                  "description": "Filter by author name"
+                }
+              ]
+            },
+            "description": "Filter articles by author name"
+          },
+          "response": []
+        },
+        {
+          "name": "Combined Search + Author + Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?search=database&author=Jane&page=1&limit=3",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "database",
+                  "description": "Search term"
+                },
+                {
+                  "key": "author",
+                  "value": "Jane",
+                  "description": "Author filter"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "3",
+                  "description": "Items per page"
+                }
+              ]
+            },
+            "description": "Combined search, author filter, and pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "Large Page Size",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50",
+                  "description": "Large page size"
+                }
+              ]
+            },
+            "description": "Test with large page size"
+          },
+          "response": []
+        },
+        {
+          "name": "Page Beyond Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?page=999&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "999",
+                  "description": "Page beyond available data"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page"
+                }
+              ]
+            },
+            "description": "Test pagination with page number beyond available data"
+          },
+          "response": []
+        },
+        {
+          "name": "Case Insensitive Search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?search=GOLANG",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "GOLANG",
+                  "description": "Case insensitive search"
+                }
+              ]
+            },
+            "description": "Test case insensitive search"
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Author Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?author=Jo",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "author",
+                  "value": "Jo",
+                  "description": "Partial author name"
+                }
+              ]
+            },
+            "description": "Test partial author name matching"
+          },
+          "response": []
+        },
+        {
+          "name": "Special Characters Search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?search=@#$%",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "@#$%",
+                  "description": "Search with special characters"
+                }
+              ]
+            },
+            "description": "Test search with special characters"
+          },
+          "response": []
+        },
+        {
+          "name": "URL Encoded Search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?search=hello%20world",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "hello%20world",
+                  "description": "URL encoded search"
+                }
+              ]
+            },
+            "description": "Test search with URL encoded characters"
+          },
+          "response": []
+        },
+        {
+          "name": "Empty Parameters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?search=&author=&page=&limit=",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Empty search"
+                },
+                {
+                  "key": "author",
+                  "value": "",
+                  "description": "Empty author"
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "Empty page"
+                },
+                {
+                  "key": "limit",
+                  "value": "",
+                  "description": "Empty limit"
+                }
+              ]
+            },
+            "description": "Test with empty parameters"
+          },
+          "response": []
+        },
+        {
+          "name": "Negative Page Number",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?page=-1",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "-1",
+                  "description": "Negative page number"
+                }
+              ]
+            },
+            "description": "Test with negative page number"
+          },
+          "response": []
+        },
+        {
+          "name": "Zero Limit",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?limit=0",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "0",
+                  "description": "Zero limit"
+                }
+              ]
+            },
+            "description": "Test with zero limit"
+          },
+          "response": []
+        }
+      ],
+      "description": "Collection of GET /articles requests with various query parameters and filters"
+    },
+    {
+      "name": "Create Articles",
+      "item": [
+        {
+          "name": "Valid Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Test Article\",\n    \"body\": \"This is a test article body with some content.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with valid data"
+          },
+          "response": []
+        },
+        {
+          "name": "Long Title Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"This is a very long article title that contains many words and should test the database field length limits and application handling of long titles\",\n    \"body\": \"Article body content.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with very long title"
+          },
+          "response": []
+        },
+        {
+          "name": "Long Body Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Article with Long Body\",\n    \"body\": \"This is a very long article body that contains a lot of content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with very long body content"
+          },
+          "response": []
+        },
+        {
+          "name": "Special Characters Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Article with Special Chars: @#$%^&*()\",\n    \"body\": \"Body with special chars: !@#$%^&*()_+-=[]{}|;:,.<>?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with special characters"
+          },
+          "response": []
+        },
+        {
+          "name": "Unicode Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Article with Unicode: 你好世界 🌍\",\n    \"body\": \"Body with unicode: 测试内容 and emojis 🚀\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with unicode characters"
+          },
+          "response": []
+        },
+        {
+          "name": "HTML Content Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Article with HTML\",\n    \"body\": \"<h1>Title</h1><p>This is a <strong>bold</strong> paragraph with <em>italic</em> text.</p><ul><li>Item 1</li><li>Item 2</li></ul>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with HTML content"
+          },
+          "response": []
+        },
+        {
+          "name": "JSON Content Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Article with JSON\",\n    \"body\": \"{\\\"key1\\\": \\\"value1\\\", \\\"key2\\\": [1, 2, 3], \\\"key3\\\": {\\\"nested\\\": \\\"object\\\"}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with JSON content in body"
+          },
+          "response": []
+        },
+        {
+          "name": "Different Author",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-2\",\n    \"title\": \"Article by Jane Smith\",\n    \"body\": \"This article is written by Jane Smith.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with different author"
+          },
+          "response": []
+        },
+        {
+          "name": "Minimal Title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"A\",\n    \"body\": \"Minimal title test.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with minimal title"
+          },
+          "response": []
+        },
+        {
+          "name": "Minimal Body",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Minimal Body Test\",\n    \"body\": \"X\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with minimal body"
+          },
+          "response": []
+        },
+        {
+          "name": "Extra Fields",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Article with Extra Fields\",\n    \"body\": \"Test body\",\n    \"extra_field\": \"should be ignored\",\n    \"another_field\": 123\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Create article with extra fields (should be ignored)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Collection of POST /articles requests with various data scenarios"
+    },
+    {
+      "name": "Error Scenarios",
+      "item": [
+        {
+          "name": "Empty Title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"\",\n    \"body\": \"Article with empty title.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test validation with empty title (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Empty Body",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Article with Empty Body\",\n    \"body\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test validation with empty body (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing Author ID",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Article without Author\",\n    \"body\": \"This article has no author_id.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test validation without author_id (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing Title",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"body\": \"This article has no title.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test validation without title (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing Body",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Article without Body\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test validation without body (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Author ID",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"non-existent-author\",\n    \"title\": \"Article with Invalid Author\",\n    \"body\": \"This article has an invalid author_id.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test with non-existent author_id (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid JSON",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"author_id\": \"author-1\",\n    \"title\": \"Invalid JSON\",\n    \"body\": \"Test\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test with malformed JSON (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Wrong Content-Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"author_id\":\"author-1\",\"title\":\"Test\",\"body\":\"Test\"}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test with wrong Content-Type (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing Content-Type",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"author_id\":\"author-1\",\"title\":\"Test\",\"body\":\"Test\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test without Content-Type header (should return 400)"
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid HTTP Method",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Test with unsupported HTTP method (should return 405)"
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/invalid-endpoint",
+              "host": ["{{base_url}}"],
+              "path": ["invalid-endpoint"]
+            },
+            "description": "Test with non-existent endpoint (should return 404)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Collection of error scenario tests"
+    },
+    {
+      "name": "Performance Tests",
+      "item": [
+        {
+          "name": "Large Limit Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles?limit=1000",
+              "host": ["{{base_url}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "1000",
+                  "description": "Very large limit"
+                }
+              ]
+            },
+            "description": "Test with very large limit"
+          },
+          "response": []
+        },
+        {
+          "name": "Cache Test - Multiple Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/articles",
+              "host": ["{{base_url}}"],
+              "path": ["articles"]
+            },
+            "description": "Run this multiple times to test caching behavior"
+          },
+          "response": []
+        }
+      ],
+      "description": "Performance and caching tests"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set base URL if not already set",
+          "if (!pm.environment.get('base_url')) {",
+          "    pm.environment.set('base_url', 'http://localhost:8080');",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Basic response time test",
+          "pm.test('Response time is less than 2000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+          "});",
+          "",
+          "// Check for valid JSON response",
+          "pm.test('Response is valid JSON', function () {",
+          "    pm.response.to.be.json;",
+          "});",
+          "",
+          "// Log response for debugging",
+          "console.log('Response Status:', pm.response.status);",
+          "console.log('Response Time:', pm.response.responseTime + 'ms');"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
